@@ -20,6 +20,14 @@
 // Date of Change  : 30th April 2003
 // Modifier        : Thorn Aitch
 // Description     : Release Version 1.0
+//------------------------------------------------------
+// Revision Number : 3
+// Date of Change  : 10th December 2003
+// Modifier        : Thorn Aitch
+// Description     : Release Version 1.1
+//                   Inhibit substitution of "x"
+//                   except for defalut statement whose
+//                   case describes all logic spaces. 
 //======================================================
 // Copyright (C) 2002-2003, Thorn Aitch
 //
@@ -491,7 +499,8 @@ module datapath(
                                |( ALUINX[31]& ALUINY[31]&~ADDSUBXY[31]);
             `ALU_SUBV : CRYO <= (~ALUINX[31]& ALUINY[31]& ADDSUBXY[31])
                                |( ALUINX[31]&~ALUINY[31]&~ADDSUBXY[31]);
-            default   : CRYO <= 1'bx;
+            // default   : CRYO <= 1'bx; // Thorn Aitch 2003/12/10
+		  default   : CRYO <= 1'b0;    // Thorn Aitch 2003/12/10
         endcase
     end
 

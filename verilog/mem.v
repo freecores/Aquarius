@@ -24,7 +24,15 @@
 // Revision Number : 3
 // Date of Change  : 30th April 2003
 // Modifier        : Thorn Aitch
-// Description     : Release Version 1.0
+// Description     : Release Version 1.0	  
+//------------------------------------------------------
+// Revision Number : 4
+// Date of Change  : 10th December 2003
+// Modifier        : Thorn Aitch
+// Description     : Release Version 1.1
+//                   Inhibit substitution of "x"
+//                   except for defalut statement whose
+//                   case describes all logic spaces.
 //======================================================
 // Copyright (C) 2002-2003, Thorn Aitch
 //
@@ -496,10 +504,10 @@ module mem(
                    end
             default: // 2'b11 don't care
                    begin
-                       DATO_PREV[31:24] <= 8'hxx;
-                       DATO_PREV[23:16] <= 8'hxx;
-                       DATO_PREV[15: 8] <= 8'hxx;
-                       DATO_PREV[ 7: 0] <= 8'hxx;
+                       DATO_PREV[31:24] <= MA_DW[31:24]; // Thorn Aitch 2003/12/10
+                       DATO_PREV[23:16] <= MA_DW[23:16]; // Thorn Aitch 2003/12/10
+                       DATO_PREV[15: 8] <= MA_DW[15: 8]; // Thorn Aitch 2003/12/10
+                       DATO_PREV[ 7: 0] <= MA_DW[15: 8]; // Thorn Aitch 2003/12/10
                    end
         endcase
     end
@@ -538,10 +546,11 @@ module mem(
             end
         else
         // IF from IF_BUF
-            if ((IF_STATE[2] == 1'b1) && (IF_STATE[0] == 1'b1)) // `S_IFIN or `S_MAEX_IFIN
-                IF_DR <= IF_IF_BUF;
-            else 
-                IF_DR <= 32'hxxxxxxxx;
+            //if ((IF_STATE[2] == 1'b1) && (IF_STATE[0] == 1'b1)) // `S_IFIN or `S_MAEX_IFIN
+            //    IF_DR <= IF_IF_BUF;	    // Thorn Aitch 2003/12/10
+            //else 					    // Thorn Aitch 2003/12/10
+            //    IF_DR <= 32'hxxxxxxxx;    // Thorn Aitch 2003/12/10
+		  IF_DR <= IF_IF_BUF;		    // Thorn Aitch 2003/12/10
     end
     // output
     //always @(posedge CLK) begin
@@ -617,7 +626,8 @@ module mem(
                        MA_DR[31:0] <= MA_DR_PREV[31:0];
                    end
             default : begin
-                          MA_DR[31:0] <= 32'hxxxxxxxx;
+                          //MA_DR[31:0] <= 32'hxxxxxxxx;    // Thorn Aitch 2003/12/10 
+					 MA_DR[31:0] <= MA_DR_PREV[31:0];  // Thorn Aitch 2003/12/10
                       end
         endcase
     end

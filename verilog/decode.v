@@ -24,7 +24,15 @@
 // Revision Number : 3
 // Date of Change  : 30th April 2003
 // Modifier        : Thorn Aitch
-// Description     : Release Version 1.0
+// Description     : Release Version 1.0  
+//------------------------------------------------------
+// Revision Number : 4
+// Date of Change  : 10th December 2003
+// Modifier        : Thorn Aitch
+// Description     : Release Version 1.1
+//                   Inhibit substitution of "x"
+//                   except for defalut statement whose
+//                   case describes all logic spaces. 
 //======================================================
 // Copyright (C) 2002-2003, Thorn Aitch
 //
@@ -993,7 +1001,7 @@ module decode(
 
 
     always @(EX_RDREG_X  or EX_RDREG_Y or EX_WRREG_Z
-          or EX_REGNUM_X or EX_REGNUM_Y 
+          or EX_REGNUM_X or EX_REGNUM_Y or EX_REGNUM_Z  // Thorn Aitch 2003/12/10
           or WB1_WRREG_W or WB1_REGNUM_W
           or EX_RDPR_X   or EX_RDPR_Y  or EX_WRPR_Z
           or WB1_WRPR_W
@@ -1084,7 +1092,8 @@ module decode(
         {ID_IF_ISSUE,ID_IF_JP} =  2'b00;
         {EX_IF_ISSUE,EX_IF_JP} =  2'b00;
         {EX_RDREG_X, EX_RDREG_Y, EX_WRREG_Z, WB_WRREG_W } =  4'b0000;
-        {EX_REGNUM_X,EX_REGNUM_Y,EX_REGNUM_Z,WB_REGNUM_W} = 16'hxxxx;
+        // {EX_REGNUM_X,EX_REGNUM_Y,EX_REGNUM_Z,WB_REGNUM_W} = 16'hxxxx; // Thorn Aitch 2003/12/10
+	   {EX_REGNUM_X,EX_REGNUM_Y,EX_REGNUM_Z,WB_REGNUM_W} = 16'h0000;    // Thorn Aitch 2003/12/10
         {EX_ALUFUNC}  = `ALU_NOP;
         {EX_MULCOM1, EX_MULCOM2}   = 9'b000000000;
         {WB_MULCOM1, WB_MULCOM2}   = 9'b000000000;
@@ -1100,7 +1109,8 @@ module decode(
         {EX_RDGBR_X, EX_RDGBR_Y, EX_WRGBR_Z, WB_WRGBR_W} = 4'b0000;
         {EX_RDVBR_X, EX_RDVBR_Y, EX_WRVBR_Z, WB_WRVBR_W} = 4'b0000;
         {EX_RDPR_X, EX_RDPR_Y, EX_WRPR_Z, WB_WRPR_W, EX_WRPR_PC} = 5'b00000;
-        {EX_MA_ISSUE,EX_MA_WR,EX_MA_SZ,EX_KEEP_CYC} =  5'b0xxxx;
+        // {EX_MA_ISSUE,EX_MA_WR,EX_MA_SZ,EX_KEEP_CYC} =  5'b0xxxx; // Thorn Aitch 2003/12/10
+	   {EX_MA_ISSUE,EX_MA_WR,EX_MA_SZ,EX_KEEP_CYC} =  5'b00000;    // Thorn Aitch 2003/12/10
         {EX_WRMAAD_Z,EX_WRMADW_X,EX_WRMADW_Y,WB_RDMADR_W} = 4'b0000;    
         {EX_RDPC_X,EX_RDPC_Y,EX_WRPC_Z,ID_INCPC} = 4'b0000;
         {ID_IFADSEL, EX_IFADSEL}                 = 2'b00;
@@ -1108,8 +1118,10 @@ module decode(
         {EX_CONST_ZERO8,EX_CONST_ZERO82,EX_CONST_ZERO84} = 3'b000;
         {EX_CONST_SIGN8,EX_CONST_SIGN82,EX_CONST_SIGN122} = 3'b000;
         {EX_RDCONST_X,EX_RDCONST_Y} = 2'b00;
-        {EX_CMPCOM}  = 3'bxxx;
-        {EX_SFTFUNC} = 5'bxxxx;
+        // {EX_CMPCOM}  = 3'bxxx;  // Thorn Aitch 2003/12/10
+	   {EX_CMPCOM}  = 3'b000;     // Thorn Aitch 2003/12/10
+        // {EX_SFTFUNC} = 5'bxxxx; // Thorn Aitch 2003/12/10
+	   {EX_SFTFUNC} = 5'b0000;    // Thorn Aitch 2003/12/10
         {EX_RDSFT_Z} = 1'b0;
         {EX_T_CMPSET, EX_T_CRYSET, EX_T_TSTSET, EX_T_SFTSET} = 4'b0000;
         {EX_QT_DV1SET, EX_MQT_DV0SET} = 2'b00;
